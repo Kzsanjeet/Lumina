@@ -16,7 +16,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      {/* <nav>hh</nav>   yeta bata whole entire html nai dekhauxa  */}
+      {/* yesle jastai maile nav banaye vani purai page lai nai kaam lagxa home about sab */}
+       <body className={inter.className}>{children}</body>
     </html>
   );
 }
