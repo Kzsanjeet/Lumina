@@ -1,5 +1,7 @@
-import React from 'react';
-import { Input } from '@/components/ui/input';
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 const RegistrationForm = () => {
   return (
@@ -9,41 +11,77 @@ const RegistrationForm = () => {
           <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
           <form>
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Name</label>
-              <Input type="text" name="lastName" placeholder="Last Name" />
+              <label className="block text-sm font-medium text-gray-700">
+                Name
+              </label>
+              <Input
+                type="text"
+                name="Name"
+                placeholder="Enter your Name"
+                className="w-[400px]"
+              />
             </div>
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Email</label>
-              <Input type="email" name="email" placeholder="Email" />
+              <label className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
+              <Input
+                type="email"
+                name="email"
+                placeholder="Email"
+                className="w-[400px]"
+              />
             </div>
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Password</label>
-              <Input type="password" name="password" placeholder="Password" />
+              <label className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <Input
+                type="password"
+                name="password"
+                placeholder="Password"
+                className="w-[400px]"
+              />
             </div>
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700">Confirm password</label>
-              <Input type="password" name="password" placeholder="Password" />
+              <label className="block text-sm font-medium text-gray-700">
+                Confirm Password
+              </label>
+              <Input
+                type="password"
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                className="w-[400px]"
+              />
             </div>
-            <button
+            <Button
               type="submit"
               className="w-full py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
             >
-              Register
-            </button>
-            <button
-                    type="button"
-                    className="w-full py-2 bg-gray text-black rounded hover:bg-blue-600 flex items-center justify-center"
-                    style={{ borderRadius: '9999px' }} // This sets the button to be perfectly round
-                    >
-                    <div className="flex items-center justify-center rounded-full bg-white p-1 mr-2">
-                      <img
-                        src="https://w7.pngwing.com/pngs/506/509/png-transparent-google-company-text-logo-thumbnail.png"
-                        alt="Google Logo"
-                        className="w-6 h-6"
-                        />
-                    </div>
-                  <span>Continue with Google</span>
+              Sign Up
+            </Button>
+            <div className="mt-4 text-center">
+              <span>Already have an account? </span>
+              <Link href="/login" className="text-blue-500 hover:underline">
+                Log In
+              </Link>
+            </div>
+            <div className="mt-4">
+              <button
+                type="button"
+                className="w-full py-2 flex items-center justify-center border border-blue-500 hover:border-blue-800 hover:border-2"
+                style={{ borderRadius: "9999px" }}
+              >
+                <div className="flex items-center justify-center rounded-full bg-white p-1 mr-2">
+                  <img
+                    src="https://w7.pngwing.com/pngs/506/509/png-transparent-google-company-text-logo-thumbnail.png"
+                    alt="Google Logo"
+                    className="w-6 h-6"
+                  />
+                </div>
+                <span>Continue with Google</span>
               </button>
+            </div>
           </form>
         </div>
         <div className="hidden md:flex w-full md:w-1/2 bg-blue-500 items-center justify-center">
@@ -59,19 +97,3 @@ const RegistrationForm = () => {
 };
 
 export default RegistrationForm;
-
-
-
-// import { Button } from "@/components/ui/button"
-
-// function page() {
-//   return (
-//     <div>
-//       {/* <button>send</button> */}
-//       <Button > hello</Button>
-//     </div>
-//   )
-// }
-
-// export default page
-
