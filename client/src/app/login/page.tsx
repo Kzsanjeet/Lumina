@@ -1,7 +1,7 @@
 // import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-
+//hello
 function Login() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -57,7 +57,7 @@ function Login() {
           <img
             src="https://www.sme-news.co.uk/wp-content/uploads/2021/11/Login.jpg"
             alt="Register Now"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover" 
           />
         </div>
       </div>

@@ -8,18 +8,19 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  name  String
-  email String  @unique
-  password String 
-  avatar String?
-  contact String
-  lastFivePassword String[]
-  twoFAEnabled Boolean
+  id                 Int       @id @default(autoincrement())
+  name               String
+  email              String    @unique
+  password           String
+  avatar             String?
+  contact            String
+  lastFivePassword   String[]
+  twoFAEnabled       Boolean
+  otp                String?
+  otpTimestamp       DateTime?
   wrongPasswordCounter Int
-  isPassBlockEnabled  Boolean
-  refreshToken String?
-  createdAt DateTime @default(now())
+  isPassBlockEnabled Boolean
+  refreshToken       String?
+  createdAt          DateTime  @default(now())
 }
-
 
