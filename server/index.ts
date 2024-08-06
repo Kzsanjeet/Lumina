@@ -1,9 +1,8 @@
-import dotenv from "dotenv";
 import connectToDatabase from "../server/controller/dbConnect";
 import app from "./app";
 
 // Load environment variables from .env
-dotenv.config();
+
 
 // Invoke the database connection
 connectToDatabase();

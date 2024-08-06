@@ -141,76 +141,50 @@ const loginUser = async (req: Request, res: Response) => {
 
 
 // Request password reset
-const requestPasswordReset = async (req: Request, res: Response) => {
-  const { email } = req.body;
-
-  if (!email) {
-    return res.status(400).json({ success: false, message: "Email is required" });
-  }
-
-  try {
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
-    }
-
-    const resetToken = jwt.sign({ email }, process.env.RESET_SECRET_KEY as string, { expiresIn: '1h' });
-
-    // Send password reset email
-    const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
-    const mailOptions = {
-      from: process.env.EMAIL,
-      to: email,
-      subject: 'Password Reset',
-      text: `To reset your password, click the following link: ${resetUrl}`,
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error('Error sending email:', error);
-        return res.status(500).json({ success: false, message: 'Error sending email' });
-      }
-      return res.status(200).json({ success: true, message: 'Password reset email sent' });
-    });
-  } catch (error) {
-    console.error('Error requesting password reset:', error);
-    return res.status(500).json({ success: false, message: 'Internal server error' });
-  }
-};
-
-// Reset password
 const resetPassword = async (req: Request, res: Response) => {
-  const { token, newPassword } = req.body;
+  try{
+  const { token,otp,newPassword} = req.body;
 
-  if (!token || !newPassword) {
-    return res.status(400).json({ success: false, message: "Token and new password are required" });
+  if(!token && !otp && !newPassword){
+    return res.status(400).json({ success: false, message: "Missing required fields"})
   }
 
-  try {
-    const decoded = jwt.verify(token, process.env.RESET_SECRET_KEY as string) as { email: string };
-    const { email } = decoded;
+   const verifyJwt = jwt.verify(token, process.env.RESET_PASSWORD_SECRET as string);
+   if (!verifyJwt) {
+     return res.status(400).json({ success: false, message: "Invalid token" });
+   }
 
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) {
-      return res.status(404).json({ success: false, message: "User not found" });
-    }
+   const { email } = verifyJwt as { email: string };
+   if (!email) {
+     return res.status(400).json({ success: false, message: "Invalid token payload" });
+   }
 
-    const hashedPassword = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(10));
-    await prisma.user.update({
-      where: { email },
-      data: {
-        password: hashedPassword,
-        otp: null, // Clear OTP
-        otpTimestamp: null,
-      },
-    });
+   const user = await prisma.user.findUnique({ where: { email } });
+   if (!user) {
+     return res.status(404).json({ success: false, message: "User not found" });
+   }
 
-    return res.status(200).json({ success: true, message: 'Password successfully reset' });
-  } catch (error) {
-    console.error('Error resetting password:', error);
-    return res.status(500).json({ success: false, message: 'Internal server error' });
-  }
+   // Check if the provided OTP matches the one saved in the database
+   if (user.otp !== otp) {
+     return res.status(400).json({ success: false, message: "Invalid OTP" });
+   }
+ 
+   const hashedPassword = bcrypt.hashSync(newPassword, bcrypt.genSaltSync(10));
+
+   await prisma.user.update({
+     where: { email },
+     data: {
+       password: hashedPassword
+     },
+   });
+
+   return res.status(200).json({ success: true, message: "Password successfully reset" });
+ } catch (error) {
+   console.error("Error resetting password:", error);
+   return res.status(500).json({ success: false, message: "Internal server error" });
+ }
 };
+
 
 // const logout = async (req: Request, res: Response) => {
 //   try {
@@ -264,11 +238,10 @@ const resetPassword = async (req: Request, res: Response) => {
 //     if(!user) return res.status(400).json({success:false,message:"User not found"})
 //       const checkPassword = bcrypt.compareSync(password,user.password)
 //     if(!checkPassword) return res.status(400).json({success:false,message:"Invalid password"})
-      
 //   } catch (error) {
     
 //   }
 // }
 
 
-export  {createUser,getUser, getSpecificData, loginUser};
+export  {createUser,getUser, getSpecificData, loginUser , resetPassword};
